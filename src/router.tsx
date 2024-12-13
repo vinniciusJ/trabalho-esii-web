@@ -5,7 +5,8 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { NavigationLayout } from './layouts/navigation'
 import ErrorNotFound from './pages/error/not-found'
 
-const EventTypes = lazy(() => import('@/pages/event-types'))
+const EventTypesPage = lazy(() => import('@/pages/event-type'))
+const EventsPage = lazy(() => import('@/pages/event'))
 
 export const router = createBrowserRouter([
 	{
@@ -16,14 +17,14 @@ export const router = createBrowserRouter([
 				children: [
 					{
 						index: true,
-						element: <Navigate to='event-types' />,
+						element: <Navigate to='events' />,
 					},
 					{
 						path: 'event-types',
 						children: [
 							{
 								index: true,
-								element: <EventTypes />,
+								element: <EventTypesPage />,
 							},
 							
 						],
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
 						children: [
 							{
 								index: true,
-								//element: <EventTypes />,
+								element: <EventsPage />,
 							},
 							
 						],

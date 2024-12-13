@@ -29,7 +29,7 @@ const SortingButton = <T extends object>({ column }: HeaderButtonProps<T>) => {
 
 				{!isSortedByThisColumn && <SwapVert />}
 			</IconButton>
-			<Popover ref={sortingPopover} title='table.sorting.sorting'>
+			<Popover ref={sortingPopover} title='Ordenação'>
 				{
 					<ToggleButtonGroup
 						orientation='vertical'

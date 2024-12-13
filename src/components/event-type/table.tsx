@@ -27,7 +27,6 @@ export const EventTypesTable = ({  requestParams }: Props) => {
 		columnHelper.accessor('name', {
 			id: 'name',
 			header: 'Nome',
-
 		}),
 	] as ColumnDef<EventType>[]
 

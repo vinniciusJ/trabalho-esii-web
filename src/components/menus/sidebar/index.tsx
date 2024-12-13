@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { isSidebarCollapsedAtom } from '@/atoms/sidebar'
-import { SidebarContainer, StyledToggleButtonGroup } from './syle'
+import { SidebarContainer, StyledToggleButtonGroup } from './style'
 import { Event, EventNote } from '@mui/icons-material'
 
 export const Sidebar = () => {

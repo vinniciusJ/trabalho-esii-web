@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material'
+import { Stack, TableCell } from '@mui/material'
 import { Header, flexRender } from '@tanstack/react-table'
 
 import SortingButton from './sorting-button'
@@ -11,10 +11,12 @@ const TableHeader = <T extends object>({ header }: TableHeaderProps<T>) => {
 	const column = header.column
 
 	return (
-		<Stack direction='row' alignItems='center'>
-			{flexRender(column.columnDef.header, header.getContext())}
-			{column.getCanSort() && <SortingButton column={column} />}
-		</Stack>
+		<TableCell>
+			<Stack direction='row' alignItems='center'>
+				{flexRender(column.columnDef.header, header.getContext())}
+				{column.getCanSort() && <SortingButton column={column} />}
+			</Stack>
+		</TableCell>
 	)
 }
 
