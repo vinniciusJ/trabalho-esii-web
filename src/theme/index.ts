@@ -1,13 +1,15 @@
 import { buttonClasses, createTheme } from '@mui/material'
 import { JUICY_PALETTE } from './colors'
+import { fonts } from './fonts'
 import { JuicyPalette } from '@/types/color'
+const IBM_PLEX_SANS_FONT_FAMILY = 'IBM Plex Sans'
 
 declare module '@mui/material/styles' {
 	interface Palette {
-		juicy: JuicyPalette
+		juicy: JuicyPalette;
 	}
 	interface PaletteOptions {
-		juicy: JuicyPalette
+		juicy: JuicyPalette;
 	}
 }
 
@@ -19,31 +21,53 @@ export const theme = createTheme({
 		},
 	},
 	typography: {
+		fontFamily: [IBM_PLEX_SANS_FONT_FAMILY, IBM_PLEX_SANS_FONT_FAMILY].join(','),
+		h3: undefined,
+		h4: undefined,
+		h5: undefined,
+		h6: undefined,
+		subtitle1: undefined,
+		subtitle2: undefined,
 		allVariants: {
-			color: JUICY_PALETTE.neutral[100],
-		},
-		button: {
-			textTransform: 'initial',
+			fontFamily: IBM_PLEX_SANS_FONT_FAMILY,
+			color: JUICY_PALETTE.primary[100],
+			fontSize: '1rem',
 		},
 		h1: {
-			fontWeight: 500,
-			fontSize: 24,
-			lineHeight: '32px',
+			fontFamily: IBM_PLEX_SANS_FONT_FAMILY,
+			fontSize: '2rem',
+			'@media screen and (max-width: 416px)': {
+				fontSize: '1.5rem',
+			},
 		},
 		h2: {
-			fontWeight: 300,
-			fontSize: 20,
+			fontFamily: IBM_PLEX_SANS_FONT_FAMILY,
+			fontSize: '1.5rem',
+			'@media screen and (max-width: 416px)': {
+				fontSize: 16,
+			},
 		},
-		h3: {
-			fontWeight: 300,
-			fontSize: 18,
+		button: {
+			fontFamily: IBM_PLEX_SANS_FONT_FAMILY,
+			'@media screen and (max-width: 416px)': {
+				fontSize: '0.875rem',
+			},
 		},
-		h4: {
-			fontWeight: 600,
-			fontSize: 14,
+		body1: {
+			'@media screen and (max-width: 416px)': {
+				fontSize: '0.875rem',
+			},
+		},
+		body2: {
+			'@media screen and (max-width: 416px)': {
+				fontSize: '0.875rem',
+			},
 		},
 	},
 	components: {
+		MuiCssBaseline: {
+			styleOverrides: Object.values(fonts).join('\n'),
+		},
 		MuiTab: {
 			styleOverrides: {
 				root: {
@@ -57,7 +81,6 @@ export const theme = createTheme({
 					'&:not(.Mui-selected):hover': {
 						color: JUICY_PALETTE.neutral[80],
 					},
-					// indicador para tabs não selecionadas em hover
 					'&:hover::before': {
 						content: '""',
 						position: 'absolute',
@@ -98,6 +121,7 @@ export const theme = createTheme({
 				{
 					props: { variant: 'outlined' },
 					style: {
+						textTransform: 'none',
 						color: JUICY_PALETTE.neutral[100],
 						borderColor: JUICY_PALETTE.neutral[50],
 						'&:hover': {
@@ -105,7 +129,7 @@ export const theme = createTheme({
 							borderColor: JUICY_PALETTE.neutral[50],
 						},
 						'&:active': {
-							backgorund: JUICY_PALETTE.neutral[40],
+							background: JUICY_PALETTE.neutral[40],
 							borderColor: JUICY_PALETTE.neutral[50],
 						},
 						[`& .${buttonClasses.icon}`]: {
@@ -116,6 +140,7 @@ export const theme = createTheme({
 				{
 					props: { variant: 'contained' },
 					style: {
+						textTransform: 'none',
 						background: JUICY_PALETTE.primary[60],
 						'&:hover': {
 							boxShadow: 'none',
@@ -134,7 +159,8 @@ export const theme = createTheme({
 				{
 					props: { variant: 'text' },
 					style: {
-						'&:hover': { backgorund: JUICY_PALETTE.primary[10] },
+						textTransform: 'none',
+						'&:hover': { background: JUICY_PALETTE.primary[10] },
 						'&:active': { background: JUICY_PALETTE.primary[20] },
 					},
 				},
@@ -164,6 +190,7 @@ export const theme = createTheme({
 			styleOverrides: {
 				root: {
 					display: 'flex',
+					textTransform: 'none',
 					justifyContent: 'start',
 					gap: '8px',
 					padding: '16px 24px',
@@ -171,8 +198,8 @@ export const theme = createTheme({
 					fontWeight: 400,
 					borderRadius: 0,
 					border: 'none',
+					fontSize: '14px',
 					height: '56px',
-		
 					'& svg': {
 						fill: JUICY_PALETTE.primary[30],
 						width: '20px',
@@ -181,26 +208,23 @@ export const theme = createTheme({
 					'&.Mui-selected': {
 						color: JUICY_PALETTE.neutral[10],
 						background: JUICY_PALETTE.primary[40],
-						borderLeft: `4px solid ${JUICY_PALETTE.neutral[10]}`, 
+						borderLeft: `4px solid ${JUICY_PALETTE.neutral[10]}`,
 						paddingLeft: '20px',
-		
 						':hover': {
 							background: JUICY_PALETTE.primary[40],
 							transition: '0.3s',
 						},
-		
 						'& svg': {
 							fill: JUICY_PALETTE.neutral[10],
 						},
 					},
-		
 					'&:hover': {
 						background: JUICY_PALETTE.primary[40],
 						transition: '0.3s',
 					},
 				},
 			},
-		},		
+		},
 		MuiTextField: {
 			defaultProps: {
 				variant: 'filled',
@@ -220,40 +244,6 @@ export const theme = createTheme({
 			defaultProps: {
 				style: {
 					borderRadius: 0,
-				},
-			},
-		},
-		MuiSwitch: {
-			styleOverrides: {
-				colorPrimary: {
-					color: JUICY_PALETTE.neutral[10],
-					'& + .MuiSwitch-track': {
-						backgroundColor: JUICY_PALETTE.primary[50],
-					},
-					'&.Mui-checked': {
-						color: JUICY_PALETTE.primary[60],
-					},
-					'&.Mui-checked + .MuiSwitch-track': {
-						backgroundColor: JUICY_PALETTE.primary[60],
-					},
-				},
-			},
-		},
-		MuiIconButton: {
-			styleOverrides: {
-				colorInfo: {
-					color: 'white',
-					'&:disabled': {
-						color: JUICY_PALETTE.neutral[60],
-					},
-				},
-			},
-		},
-		MuiAvatar: {
-			styleOverrides: {
-				root: {
-					color: JUICY_PALETTE.primary[60],
-					background: JUICY_PALETTE.primary[10],
 				},
 			},
 		},

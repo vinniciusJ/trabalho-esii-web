@@ -20,7 +20,7 @@ export const ViewLayoutHeaderTitle = ({ children, goBack, isLoading = false }: P
 					<ArrowLeft />
 				</IconButton>
 			)}
-			<Typography variant='h1'>
+			<Typography variant='h2'>
 				{isLoading ? <Skeleton width={theme.spacing(48)} height={theme.spacing(5)} /> : children}
 			</Typography>
 		</Stack>
