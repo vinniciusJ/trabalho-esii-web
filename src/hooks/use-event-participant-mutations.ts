@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { EventParticipantForm } from '@/schemas/user'
-import EventParticipantService from '@/service/participants'
+import EventParticipantService from '@/service/requests/participants'
 
 const eventParticipantService = new EventParticipantService()
 

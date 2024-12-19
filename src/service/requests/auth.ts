@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { API_BASE_URL } from '../shared/api'
+import { API_BASE_URL } from '../../shared/api'
 
 export type LoginResponse = {
     token: string

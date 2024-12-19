@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Link, Typography } from '@mui/material'
 import { EventParticipantForm, eventParticipantFormSchema } from '@/schemas/user'
-import { useEventParticipantsMutations } from '@/hooks/event-participant'
+import { useEventParticipantsMutations } from '@/hooks/use-event-participant-mutations'
 import {  useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo-register.svg'
 import { Form, Logo, TextField } from './styles'
