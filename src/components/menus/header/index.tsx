@@ -1,11 +1,9 @@
 import { useCallback } from 'react'
-
-import { IconButton, Stack } from '@mui/material'
+import { IconButton, Stack, Typography } from '@mui/material'
 import { useAtom } from 'jotai'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { HeaderContainer } from './style'
-import Logotype from '@/assets/logotype.svg?react'
 import { isSidebarCollapsedAtom } from '@/atoms/sidebar'
 
 export const Header = () => {
@@ -25,10 +23,8 @@ export const Header = () => {
 						<ChevronLeftIcon sx={{ color: theme => theme.palette.juicy.neutral[10] }} />
 					)}
 				</IconButton>
-
-				<Logotype />
+				<Typography fontWeight={'light'} sx={(theme) => ({color: theme.palette.juicy.neutral[10]})}>Eventos +</Typography>
 			</Stack>
-
 		</HeaderContainer>
 	)
 }

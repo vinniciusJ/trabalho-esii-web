@@ -1,5 +1,4 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-
 import Table from '@/components/ui/table'
 import { useGetPageable } from '@/hooks/get'
 import { ENDPOINTS } from '@/constants/endpoints'
@@ -29,30 +28,26 @@ export const EventsTable = ({  requestParams }: Props) => {
 			id: 'title',
 			header: 'Título',
 		}),
-		columnHelper.accessor('eventType.name', {
-			id: 'eventType.name',
+		columnHelper.accessor('mainEventTypeDetailsDTO.name', {
+			id: 'mainEventTypeDetailsDTO.name',
 			header: 'Tipo de evento',
 		}),
-		columnHelper.accessor('startDate', {
-			id: 'startDate',
+		columnHelper.accessor('startDateTime', {
+			id: 'startDateTime',
 			header: 'Data de início',
 			cell: (cell) => formatDateToString(cell.getValue())
 		}),
-		columnHelper.accessor('endDate', {
-			id: 'endDate',
+		columnHelper.accessor('endDateTime', {
+			id: 'endDateTime',
 			header: 'Data de término',
 			cell: (cell) => formatDateToString(cell.getValue())
 		}),
-		columnHelper.accessor('responsible.name', {
-			id: 'responsible.name',
+		columnHelper.accessor('eventManagerDetailsDTO.name', {
+			id: 'eventManagerDetailsDTO.name',
 			header: 'Responsável',
 		}),
-		columnHelper.accessor('availablePositions', {
-			id: 'availablePositions',
-			header: 'Vagas disponíveis',
-		}),
-		columnHelper.accessor('registrationFee', {
-			id: 'registrationFee',
+		columnHelper.accessor('registrationPrice', {
+			id: 'registrationPrice',
 			header: 'Taxa de inscrição',
 		}),
 	] as ColumnDef<Event>[]

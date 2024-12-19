@@ -8,7 +8,7 @@ export interface SidebarContainerProps extends StackProps {
 }
 
 export const SidebarContainer = styled(Stack)<SidebarContainerProps>(({ theme, iscollapsed }) => ({
-	background: theme.palette.juicy.primary[70],
+	background: theme.palette.juicy.primary[50],
 	height: '100vh',
 	width: SIDEBAR_WIDTH,
 	...(iscollapsed && { width: SIDEBAR_COLLAPSED_WIDTH }),

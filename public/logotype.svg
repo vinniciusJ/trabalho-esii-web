@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Agenda Shape -->
+  <rect x="40" y="30" width="120" height="140" fill="#e6e8ff" stroke="#c4c6ff" stroke-width="3" rx="15" />
+
+  <!-- Left Binding Strip -->
+  <rect x="40" y="30" width="25" height="140" fill="#ff6b6b" />
+
+  <!-- Binding Rings -->
+  <circle cx="50" cy="50" r="8" fill="#333" />
+  <circle cx="50" cy="80" r="8" fill="#333" />
+  <circle cx="50" cy="110" r="8" fill="#333" />
+  <circle cx="50" cy="140" r="8" fill="#333" />
+
+  <!-- Top Label Resembling a Face Component -->
+  <rect x="90" y="50" width="50" height="25" fill="#4a90e2" rx="5" />
+  <circle cx="100" cy="60" r="3" fill="#fff" />
+  <line x1="107" y1="60" x2="130" y2="60" stroke="#fff" stroke-width="2" />
+
+  <!-- Robot Eyes on Agenda -->
+  <circle cx="80" cy="90" r="8" fill="#333" />
+  <circle cx="120" cy="90" r="8" fill="#333" />
+
+  <!-- Robot Mouth -->
+  <line x1="85" y1="120" x2="115" y2="120" stroke="#333" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Tabs (Ears) -->
+  <rect x="155" y="60" width="10" height="25" fill="#4a90e2" rx="3" />
+  <rect x="155" y="90" width="10" height="25" fill="#4a90e2" rx="3" />
+  <rect x="155" y="120" width="10" height="25" fill="#4a90e2" rx="3" />
+
+  <!-- Antenna -->
+  <line x1="100" y1="10" x2="100" y2="30" stroke="#4a90e2" stroke-width="3" />
+  <circle cx="100" cy="10" r="5" fill="#4a90e2" />
+
+  <!-- Horizontal Lines for Agenda Details -->
+  <line x1="80" y1="130" x2="140" y2="130" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="145" x2="140" y2="145" stroke="#333" stroke-width="2" />
+
+  <!-- Text -->
+  <text x="50%" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#4a90e2">Agenda Robo</text>
+</svg>

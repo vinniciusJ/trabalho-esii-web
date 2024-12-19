@@ -1,5 +1,4 @@
 import { buttonClasses, createTheme } from '@mui/material'
-
 import { JUICY_PALETTE } from './colors'
 import { JuicyPalette } from '@/types/color'
 
@@ -173,29 +172,35 @@ export const theme = createTheme({
 					borderRadius: 0,
 					border: 'none',
 					height: '56px',
-
+		
 					'& svg': {
 						fill: JUICY_PALETTE.primary[30],
 						width: '20px',
 						height: '20px',
 					},
-
 					'&.Mui-selected': {
 						color: JUICY_PALETTE.neutral[10],
-						background: JUICY_PALETTE.primary[50],
-
+						background: JUICY_PALETTE.primary[40],
+						borderLeft: `4px solid ${JUICY_PALETTE.neutral[10]}`, 
+						paddingLeft: '20px',
+		
 						':hover': {
 							background: JUICY_PALETTE.primary[40],
-							transition: '0.3s'
+							transition: '0.3s',
 						},
-
+		
 						'& svg': {
 							fill: JUICY_PALETTE.neutral[10],
 						},
 					},
+		
+					'&:hover': {
+						background: JUICY_PALETTE.primary[40],
+						transition: '0.3s',
+					},
 				},
 			},
-		},
+		},		
 		MuiTextField: {
 			defaultProps: {
 				variant: 'filled',

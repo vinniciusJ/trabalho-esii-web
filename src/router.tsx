@@ -4,6 +4,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 import { NavigationLayout } from './layouts/navigation'
 import ErrorNotFound from './pages/error/not-found'
+import RegisterForm from './pages/register'
 
 const EventTypesPage = lazy(() => import('@/pages/event-type'))
 const EventsPage = lazy(() => import('@/pages/event'))
@@ -39,7 +40,18 @@ export const router = createBrowserRouter([
 							
 						],
 					},
+					
 				]
+			},
+			{
+				path: 'register',
+				children: [
+					{
+						index: true,
+						element: <RegisterForm />,
+					},
+					
+				],
 			},
 			{
 				path: '*',
