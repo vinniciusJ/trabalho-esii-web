@@ -1,8 +1,8 @@
 import Tooltip from '@mui/material/Tooltip'
 import { AvatarIcon } from './styles'
 import { useAuth } from '@/hooks/use-auth'
-import generateNamedAvatarIcon from '@/utils/generate-named-avatar'
 import { FC } from 'react'
+import { generateNamedAvatarIcon } from '@/utils/generate-named-avatar'
 
 export const AvatarProfile: FC = () => {
 	const { user } = useAuth()

@@ -1,9 +1,9 @@
-import { FONT_WEIGHTS } from '@/themes/fonts'
+import { FONT_WEIGHTS } from '@/theme/fonts'
 import { Avatar, AvatarProps, styled } from '@mui/material'
 
 export const AvatarIcon = styled(Avatar)<AvatarProps>(({ theme }) => ({
-	background: theme.palette.pti.primary.p10,
-	color: theme.palette.pti.primary.p60,
+	background: theme.palette.juicy.primary[10],
+	color: theme.palette.juicy.primary[60],
 	alignSelf: 'center',
 	fontSize: theme.spacing(1.5),
 	fontWeight: FONT_WEIGHTS.regular,

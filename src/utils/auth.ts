@@ -2,7 +2,7 @@ import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants/endpoints'
 import { atomWithStorage } from 'jotai/utils'
 import { jwtDecode } from 'jwt-decode'
 import { useAuth } from '../hooks/use-auth'
-import { User } from '@/schemas/user';
+import { Role, User } from '@/schemas/user';
 import { AccessToken, DecodedToken } from '@/types/auth';
 
 export const accessTokenAtom = atomWithStorage<string | null>(
@@ -44,6 +44,12 @@ export const getExpirationTime = (token: string | null): number => {
 
 export function getCpf(): string {
     const { user } = useAuth()
-    if (user && user.cpfNumber)  return user.cpfNumber
+    if (user && user.cpfNumber) return user.cpfNumber
     return ''
+}
+
+export const tranformRoleToPortuguese = (role: Role) => {
+    if (role === 'ROLE_ADMIN') return 'ADMINISTRADOR'
+    if (role === 'ROLE_EVENT_MANAGER') return 'GERENCIADOR'
+    return 'PARTICIPANTE'
 }
