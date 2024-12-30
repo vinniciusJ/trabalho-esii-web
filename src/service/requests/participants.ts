@@ -16,7 +16,6 @@ class EventParticipantService {
   async registerParticipant(payload: EventParticipantForm): Promise<void> {
     await eventosAPI.post(this.apiUrl, payload)
   }
-  
 }
 
-export default EventParticipantService;
+export default EventParticipantService

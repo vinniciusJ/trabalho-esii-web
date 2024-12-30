@@ -24,9 +24,7 @@ export const eventFormSchema = z.object({
         .nonnegative("O preço deve ser maior ou igual a 0.")
         .default(0),
     address: z.string().nonempty("O endereço é obrigatório."),
-    eventManagerCpfNumber: z
-        .string()
-        .regex(/^\d{11}$/, "O CPF deve conter 11 dígitos."),
+    eventManagerCpfNumber: z.string(),
     mainEventTypeId: z.number().positive("O tipo de evento é obrigatório."),
 })
 

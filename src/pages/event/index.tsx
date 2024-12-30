@@ -1,13 +1,22 @@
-import { EventsTable } from '@/components/event/table';
-import { StyledContainer } from '@/components/ui/container';
-import { ViewLayout } from '@/layouts/view';
-import { Button, Box, Typography } from '@mui/material';
-import { Add } from '@mui/icons-material';
-import { Modal, useModal } from '@/components/ui/modal';
-import CreateEventForm from '@/components/forms/create-event';
+import { EventsTable } from '@/components/event/table'
+import { StyledContainer } from '@/components/ui/container'
+import { ViewLayout } from '@/layouts/view'
+import { Button, Box, Typography } from '@mui/material'
+import { Add } from '@mui/icons-material'
+import { Modal, useModal } from '@/components/ui/modal'
+import CreateEventForm from '@/components/forms/create-event'
 import { FC } from 'react';
+import { useAuth } from '@/hooks/use-auth'
+import { useNavigate } from 'react-router-dom'
+import { withAuthentication } from '@/hocs'
+import { allRoles } from '@/utils/auth'
 
 const EventsPage: FC = () => {
+	const { user } = useAuth()
+	const navigate = useNavigate()
+
+	if (!user) navigate('/login')
+
 	const modalRef = useModal()
 
 	const handleOpenModal = () => modalRef.current?.openModal()
@@ -54,4 +63,4 @@ const EventsPage: FC = () => {
 	)
 }
 
-export default EventsPage
+export default withAuthentication(EventsPage, allRoles)

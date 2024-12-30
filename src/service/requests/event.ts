@@ -9,12 +9,7 @@ class EventService {
   }
 
   async createEvent(eventData: EventForm): Promise<void> {
-    try {
-      await eventosAPI.post(this.apiUrl, eventData)
-    } catch (error) {
-      console.error("Erro ao criar evento:", error)
-      throw error
-    }
+    await eventosAPI.post(this.apiUrl, eventData)
   }
 }
 

@@ -53,3 +53,5 @@ export const tranformRoleToPortuguese = (role: Role) => {
     if (role === 'ROLE_EVENT_MANAGER') return 'GERENCIADOR'
     return 'PARTICIPANTE'
 }
+
+export const allRoles: Role[] = ["ROLE_ADMIN", "ROLE_EVENT_PARTICIPANT", "ROLE_EVENT_MANAGER"]

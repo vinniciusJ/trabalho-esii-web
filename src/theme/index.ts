@@ -225,6 +225,29 @@ export const theme = createTheme({
 				},
 			},
 		},
+		MuiMenuItem: {
+			styleOverrides: {
+				root: {
+					padding: '8px 16px',
+					fontSize: 16,
+					'&:hover': {
+						backgroundColor: JUICY_PALETTE.neutral[20],
+					},
+					'&.Mui-selected': {
+						backgroundColor: JUICY_PALETTE.neutral[30],
+						color: JUICY_PALETTE.primary[60],
+						fontWeight: 500,
+					},
+					'&.Mui-selected:hover': {
+						backgroundColor: JUICY_PALETTE.neutral[30],
+					},
+					'&.Mui-focusVisible': {
+						outline: `2px solid ${JUICY_PALETTE.primary[60]}`,
+						outlineOffset: '-2px',
+					},
+				},
+			},
+		},
 		MuiTextField: {
 			defaultProps: {
 				variant: 'filled',

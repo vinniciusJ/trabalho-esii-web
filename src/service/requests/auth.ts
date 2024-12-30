@@ -1,22 +1,24 @@
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import { API_BASE_URL } from '../../shared/api'
+import { AuthCredentials } from '@/schemas/credentials'
+import { eventosAPI } from '../eventos'
 
 export type LoginResponse = {
     token: string
 }
 
-export const login = async (email: string, password: string): Promise<string> => {
-    try {
-        const response = await axios.post<LoginResponse>(`${API_BASE_URL}/authentication/login`, {
-            email,
-            password,
-        });
-        toast.success('Login realizado com sucesso!')
+class AuthService {
+    private apiUrl: string
+
+    constructor() {
+        this.apiUrl = '/authentication/login'
+    }
+
+    public async login(credentials: AuthCredentials): Promise<string> {
+        const response = await eventosAPI.post<LoginResponse>(this.apiUrl, {
+           email: credentials.email,
+           password: credentials.password
+        })
         return response.data.token
-    } catch (error) {
-        toast.error('Erro ao realizar login. Verifique suas credenciais.')
-        console.error('Erro no login:', error)
-        throw error
     }
 }
+
+export default AuthService
