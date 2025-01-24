@@ -46,4 +46,8 @@ const ModalComponent: ForwardRefRenderFunction<ModalOptions, Props> = ({ childre
 
 export const useModal = () => useRef<ModalOptions>(null)
 
+export const openModal = (ref: React.RefObject<ModalOptions>) => () => ref.current?.openModal()
+
+export const closeModal = (ref: React.RefObject<ModalOptions>) => () => ref.current?.closeModal()
+
 export const Modal = forwardRef(ModalComponent)

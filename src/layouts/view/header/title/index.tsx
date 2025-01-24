@@ -2,7 +2,7 @@ import { IconButton, Skeleton, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 import { theme } from '@/theme/index'
-import { ArrowLeft } from '@mui/icons-material'
+import { ArrowBack } from '@mui/icons-material'
 
 interface Props {
 	children?: string
@@ -17,7 +17,7 @@ export const ViewLayoutHeaderTitle = ({ children, goBack, isLoading = false }: P
 		<Stack direction='row' alignItems='center' gap={1}>
 			{goBack && (
 				<IconButton onClick={() => navigate(-1)} disabled={isLoading}>
-					<ArrowLeft />
+					<ArrowBack />
 				</IconButton>
 			)}
 			<Typography variant='h2'>

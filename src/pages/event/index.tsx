@@ -1,66 +1,67 @@
-import { EventsTable } from '@/components/event/table'
-import { StyledContainer } from '@/components/ui/container'
-import { ViewLayout } from '@/layouts/view'
-import { Button, Box, Typography } from '@mui/material'
-import { Add } from '@mui/icons-material'
-import { Modal, useModal } from '@/components/ui/modal'
-import CreateEventForm from '@/components/forms/create-event'
-import { FC } from 'react';
-import { useAuth } from '@/hooks/use-auth'
-import { useNavigate } from 'react-router-dom'
-import { withAuthentication } from '@/hocs'
-import { allRoles } from '@/utils/auth'
+import { StyledContainer } from "@/components/ui/container";
+import { ViewLayout } from "@/layouts/view";
+import { FC } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate, useParams } from "react-router-dom";
+import { withAuthentication } from "@/hocs";
+import { allRoles } from "@/utils/auth";
+import { useGetBy } from "@/hooks/get-by";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { Event } from "@/schemas/event";
+import { Field } from "@/components/ui/field";
+import { formatDateToString } from "@/utils/date";
+import { formatCurrency } from "@/utils/format-currency";
+import { Typography } from "@mui/material";
+import { EventActionsTable } from "@/components/event-action/table";
 
-const EventsPage: FC = () => {
-	const { user } = useAuth()
-	const navigate = useNavigate()
+const EventPage: FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-	if (!user) navigate('/login')
+  if (!user) navigate("/login");
 
-	const modalRef = useModal()
+  const { eventId } = useParams();
 
-	const handleOpenModal = () => modalRef.current?.openModal()
+  const { data: event } = useGetBy<Event>({
+    endpoint: ENDPOINTS.EVENT,
+    id: eventId ?? ""
+  });
 
-	const handleCloseModal = () => modalRef.current?.closeModal();
+  if (!event) return null;
 
-	return (
-		<ViewLayout.Root>
-			<ViewLayout.Header.Root>
-				<ViewLayout.Header.Title>Eventos</ViewLayout.Header.Title>
-				<ViewLayout.Header.RightElements>
-					<Button
-						variant="text"
-						color="primary"
-						startIcon={<Add />}
-						onClick={handleOpenModal}
-					>
-						Adicionar Evento
-					</Button>
-				</ViewLayout.Header.RightElements>
-			</ViewLayout.Header.Root>
+  return (
+    <ViewLayout.Root>
+      <ViewLayout.Header.Root>
+        <ViewLayout.Header.Title
+          goBack
+        >{`Evento ${event.title}`}</ViewLayout.Header.Title>
+      </ViewLayout.Header.Root>
 
-			<ViewLayout.Content>
-				<StyledContainer>
-					<EventsTable />
-				</StyledContainer>
-			</ViewLayout.Content>
+      <ViewLayout.Content>
+        <StyledContainer>
+          <Field label="Tipo de evento">
+            {event.mainEventTypeDetailsDTO.name}
+          </Field>
+          <Field label="Data de início">
+            {formatDateToString(event.startDateTime)}
+          </Field>
+          <Field label="Data de término">
+            {formatDateToString(event.endDateTime)}
+          </Field>
+          <Field label="Endereço">{event.address}</Field>
+          <Field label="Reponsável">{event.eventManagerDetailsDTO.name}</Field>
+          <Field label="Taxa de inscrição">
+            {formatCurrency(event.registrationPrice)}
+          </Field>
 
-			<Modal ref={modalRef}>
-				<Box
-					sx={{
-						p: 3,
-						backgroundColor: 'white',
-						borderRadius: 2,
-						maxWidth: 600,
-						width: '100%',
-					}}
-				>
-					<Typography >Criar Evento</Typography>
-					<CreateEventForm onClose={handleCloseModal} />
-				</Box>
-			</Modal>
-		</ViewLayout.Root>
-	)
-}
+		  <Typography variant="h2" >Ações</Typography>
 
-export default withAuthentication(EventsPage, allRoles)
+		  <EventActionsTable requestParams={{ eventId }} />
+
+        </StyledContainer>
+      </ViewLayout.Content>
+    </ViewLayout.Root>
+  );
+};
+
+export default withAuthentication(EventPage, allRoles);

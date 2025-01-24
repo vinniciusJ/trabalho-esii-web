@@ -7,8 +7,9 @@ import ErrorNotFound from './pages/error/not-found'
 import RegisterForm from './pages/register'
 import LoginPage from './pages/login'
 
-const EventTypesPage = lazy(() => import('@/pages/event-type'))
-const EventsPage = lazy(() => import('@/pages/event'))
+const EventTypesPage = lazy(() => import('@/pages/event-types'))
+const EventsPage = lazy(() => import('@/pages/events'))
+const EventPage = lazy(() => import('@/pages/event'))
 
 export const router = createBrowserRouter([
 	{
@@ -38,7 +39,10 @@ export const router = createBrowserRouter([
 								index: true,
 								element: <EventsPage />,
 							},
-							
+							{
+								path: ':eventId',
+								element: <EventPage />
+							}
 						],
 					},
 					
