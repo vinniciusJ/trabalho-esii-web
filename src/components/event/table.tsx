@@ -125,7 +125,7 @@ export const EventsTable = ({ requestParams }: Props) => {
       isLoading={isLoading}
       getRowLink={getRowLink}
       getAction={
-        user?.personRole == "ROLE_EVENT_MANAGER" ? getAction : undefined
+        user?.personRole == "ROLE_EVENT_PARTICIPANT" ? getAction : undefined
       }
     />
   );
