@@ -19,7 +19,7 @@ interface Props {
 
 export const EventActionsTable = ({ requestParams, eventId }: Props) => {
   const { user } = useAuth();
-  const { patch, remove } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+  const { create, remove } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
     endpoint: ''
   });
 
@@ -101,7 +101,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
           variant="contained"
           onClick={(e) => {
             e.preventDefault();
-            patch({
+            create({
               customEnpoint: `${ENDPOINTS.EVENT_ACTION}/${eventAction.id}/${ENDPOINTS.PARTICIPANT}`, 
               body: {
                 participantId: Number(user?.id),
