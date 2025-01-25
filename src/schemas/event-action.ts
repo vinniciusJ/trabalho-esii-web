@@ -12,7 +12,7 @@ export const eventActionSchema = z.object({
     quantityVacancies: z.number()
 })
 
-export type EventAction = z.infer<typeof eventActionSchema >
+export type EventAction = z.infer<typeof eventActionSchema>
 
 export const eventActionFormSchema = z.object({
     title: z.string().nonempty("O título do evento é obrigatório."),
@@ -27,6 +27,7 @@ export const eventActionFormSchema = z.object({
     quantityVacancies: z.number()
         .nonnegative("A quantidade de vagas deve ser maior ou igual a 0.")
         .default(0),
+    mainEventId: z.number()
 });
 
 export type EventActionForm = z.infer<typeof eventActionFormSchema>;

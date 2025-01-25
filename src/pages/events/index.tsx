@@ -4,7 +4,7 @@ import { ViewLayout } from '@/layouts/view'
 import { Button, Box, Typography } from '@mui/material'
 import { Add } from '@mui/icons-material'
 import { closeModal, Modal, openModal, useModal } from '@/components/ui/modal'
-import CreateEventForm from '@/components/forms/create-event'
+import EventForm from '@/components/event/form'
 import { FC } from 'react';
 import { useAuth } from '@/hooks/use-auth'
 import { useNavigate } from 'react-router-dom'
@@ -52,7 +52,7 @@ const EventsPage: FC = () => {
 					}}
 				>
 					<Typography >Criar Evento</Typography>
-					<CreateEventForm onClose={closeModal(modalRef)} />
+					<EventForm onClose={closeModal(modalRef)} />
 				</Box>
 			</Modal>
 		</ViewLayout.Root>

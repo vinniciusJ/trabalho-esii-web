@@ -4,7 +4,7 @@ import { ViewLayout } from '@/layouts/view'
 import { Box, Button, Typography } from '@mui/material'
 import { Add } from '@mui/icons-material'
 import { Modal, useModal } from '@/components/ui/modal'
-import CreateEventTypeForm from '@/components/forms/create-event-type'
+import EventTypeForm from '@/components/event-type/form'
 
 export const EventTypesPage = () => {
 	const modalRef = useModal()
@@ -38,7 +38,7 @@ export const EventTypesPage = () => {
 					<Typography sx={(theme) => ({ fontSize: theme.spacing(2.25) })}>
 						Criar Tipo de Evento
 					</Typography>
-					<CreateEventTypeForm onClose={handleCloseModal} />
+					<EventTypeForm onClose={handleCloseModal} />
 				</Box>
 			</Modal>
 		</ViewLayout.Root>

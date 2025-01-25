@@ -1,6 +1,7 @@
 import { Role } from "@/schemas/user";
 
 export type AccessToken = {
+    id: number;
     exp: number;
     name?: string;
     email?: string;

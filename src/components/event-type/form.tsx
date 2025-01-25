@@ -3,23 +3,23 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Button, Stack, TextField } from '@mui/material'
 import { useEventTypeMutations } from '@/hooks/use-event-type-mutations'
-import { EventTypeForm, eventTypeFormSchema } from '@/schemas/event-type'
+import { EventTypeForm as EventTypeFormType, eventTypeFormSchema } from '@/schemas/event-type'
 
-type  CreateEventTypeFormProps = {
+type Props = {
     onClose: () => void
 }
 
-const CreateEventTypeForm: FC<CreateEventTypeFormProps> = ({ onClose }) => {
+const EventTypeForm: FC<Props> = ({ onClose }) => {
     const { createEventType } = useEventTypeMutations();
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<EventTypeForm>({
+    } = useForm<EventTypeFormType>({
         resolver: zodResolver(eventTypeFormSchema),
     })
 
-    const onSubmit = (data: EventTypeForm) => {
+    const onSubmit = (data: EventTypeFormType) => {
         createEventType(data)
         onClose()
     }
@@ -53,4 +53,4 @@ const CreateEventTypeForm: FC<CreateEventTypeFormProps> = ({ onClose }) => {
     )
 }
 
-export default CreateEventTypeForm
+export default EventTypeForm

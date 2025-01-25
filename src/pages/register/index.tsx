@@ -1,5 +1,5 @@
-import RegisterForm from '@/components/forms/register';
-import { FormContainer } from '@/components/forms/register/styles';
+import RegisterForm from '@/components/auth/register';
+import { FormContainer } from '@/components/auth/register/styles';
 
 const RegisterPage = () => {
     return (

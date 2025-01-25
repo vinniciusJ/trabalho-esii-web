@@ -12,15 +12,15 @@ import {
 import { ENDPOINTS } from '@/constants/endpoints'
 import { useEventMutations } from '@/hooks/use-event-mutations'
 import { useGetAll } from '@/hooks/get';
-import { EventForm, eventFormSchema } from '@/schemas/event'
+import { EventForm as EventFormType, eventFormSchema } from '@/schemas/event'
 import { EventType } from '@/schemas/event-type'
 import { useAuth } from '@/hooks/use-auth'
 
-type CreateEventFormProps = {
+type Props = {
     onClose: () => void
 }
 
-const CreateEventForm: FC<CreateEventFormProps> = ({ onClose }) => {
+const EventForm: FC<Props> = ({ onClose }) => {
     const { createEvent } = useEventMutations()
     const { user } = useAuth()
     const { data: eventTypes, isLoading } = useGetAll<EventType>({
@@ -32,7 +32,7 @@ const CreateEventForm: FC<CreateEventFormProps> = ({ onClose }) => {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<EventForm>({
+    } = useForm<EventFormType>({
         resolver: zodResolver(eventFormSchema),
     })
 
@@ -42,7 +42,7 @@ const CreateEventForm: FC<CreateEventFormProps> = ({ onClose }) => {
         }
     }, [user?.cpfNumber, setValue])
 
-    const onSubmit = (data: EventForm) => {
+    const onSubmit = (data: EventFormType) => {
         createEvent(data)
         onClose()
     }
@@ -105,15 +105,6 @@ const CreateEventForm: FC<CreateEventFormProps> = ({ onClose }) => {
                 helperText={errors.address?.message}
             />
             <TextField
-                {...register('eventManagerCpfNumber')}
-                label="CPF do Gerente do Evento"
-                fullWidth
-                margin="normal"
-                error={!!errors.eventManagerCpfNumber}
-                helperText={errors.eventManagerCpfNumber?.message}
-                InputProps={{ readOnly: true }}
-            />
-            <TextField
                 {...register('mainEventTypeId', { valueAsNumber: true })}
                 label="Tipo de Evento"
                 select
@@ -148,4 +139,4 @@ const CreateEventForm: FC<CreateEventFormProps> = ({ onClose }) => {
     )
 }
 
-export default CreateEventForm
+export default EventForm

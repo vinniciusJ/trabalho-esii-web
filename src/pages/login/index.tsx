@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import logo from '@/assets/login.svg';
 import { FONT_WEIGHTS } from '@/theme/fonts';
-import LoginForm from '@/components/forms/login';
+import LoginForm from '@/components/auth/login';
 
 const LoginPage = () => {
 
