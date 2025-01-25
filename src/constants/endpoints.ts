@@ -2,9 +2,8 @@ export const ENDPOINTS = {
     EVENT: 'main-event',
     EVENT_TYPE: 'main-event-type',
     EVENT_ACTION: 'main-event-action',
-    EVENT_SUBSCRIPTION: 'event-subscription',
-    EVENT_ACTION_SUBSCRIPTION: 'event-subscription/action',
-    MANAGER: 'event-manager'
+    MANAGER: 'event-manager',
+    PARTICIPANT: 'participant'
 }
 
 export const ACCESS_TOKEN_KEY = 'access_token'

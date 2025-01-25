@@ -3,9 +3,7 @@ import { eventTypeSchema } from "./event-type"
 import { userSchema } from "./user"
 
 export const eventSubscriptionForm = z.object({
-    eventParticipantCpf: z.string(),
-    mainEventId: z.number(),
-    mainEventActionId: z.number().nullable().default(null)
+    participantId: z.number(),
 })
 
 export type EventSubscriptionForm = z.infer<typeof eventSubscriptionForm>

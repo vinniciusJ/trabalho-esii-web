@@ -19,8 +19,8 @@ interface Props {
 
 export const EventActionsTable = ({ requestParams, eventId }: Props) => {
   const { user } = useAuth();
-  const { create } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
-    endpoint: ENDPOINTS.EVENT_ACTION_SUBSCRIPTION
+  const { patch } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+    endpoint: ''
   });
 
   const {
@@ -31,7 +31,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
     endpoint: ENDPOINTS.EVENT_ACTION,
     requestParams: {
       ...requestParams,
-      eventId
+      eventId //TODO
     }
   });
 
@@ -85,11 +85,10 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
           variant="contained"
           onClick={(e) => {
             e.preventDefault();
-            create({
+            patch({
+              customEnpoint: `${ENDPOINTS.EVENT_ACTION}/${eventAction.id}/${ENDPOINTS.PARTICIPANT}`, 
               body: {
-                eventParticipantCpf: user?.cpfNumber ?? "",
-                mainEventId: eventId,
-                mainEventActionId: eventAction.id
+                participantId: Number(user?.id),
               },
               successMessage: "Inscrição em ação realizada com sucesso!"
             });
@@ -107,7 +106,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
       data={eventTypes}
       dataLength={totalElements}
       isLoading={isLoading}
-      getAction={getAction}
+      getAction={user?.personRole != "ROLE_ADMIN" ? getAction : undefined}
     />
   );
 };

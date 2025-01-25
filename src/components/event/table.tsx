@@ -16,8 +16,8 @@ interface Props {
 
 export const EventsTable = ({ requestParams }: Props) => {
   const { user } = useAuth();
-  const { create } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
-    endpoint: ENDPOINTS.EVENT_SUBSCRIPTION
+  const { patch } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+    endpoint: ""
   });
 
   const {
@@ -27,7 +27,10 @@ export const EventsTable = ({ requestParams }: Props) => {
   } = useGetPageable<Event>({
     endpoint: ENDPOINTS.EVENT,
     requestParams: {
-      ...requestParams
+      ...requestParams,
+      ...(user?.personRole == "ROLE_EVENT_MANAGER" && {
+        eventManagerId: Number(user?.id) //TODO
+      })
     }
   });
 
@@ -82,13 +85,12 @@ export const EventsTable = ({ requestParams }: Props) => {
           variant="contained"
           onClick={(e) => {
             e.preventDefault();
-            create({
+            patch({
+              customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}`, 
               body: {
-                eventParticipantCpf: user?.cpfNumber ?? "",
-                mainEventId: event.id,
-                mainEventActionId: null
+                participantId: Number(user?.id), //TODO
               },
-              successMessage: "Inscrição em evento realizada com sucesso!"
+              successMessage: "Inscrição em evento realizada com sucesso!",
             });
           }}
         >
@@ -96,7 +98,7 @@ export const EventsTable = ({ requestParams }: Props) => {
         </Button>
       );
     }
-  }, []);
+  }, [user, events]);
 
   return (
     <Table
@@ -105,7 +107,7 @@ export const EventsTable = ({ requestParams }: Props) => {
       dataLength={totalElements}
       isLoading={isLoading}
       getRowLink={getRowLink}
-      getAction={getAction}
+      getAction={user?.personRole != "ROLE_ADMIN" ? getAction : undefined}
     />
   );
 };
