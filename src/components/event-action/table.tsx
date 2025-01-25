@@ -1,31 +1,43 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
-import Table from '@/components/ui/table'
-import { useGetPageable } from '@/hooks/get'
-import { ENDPOINTS } from '@/constants/endpoints'
-import { EventAction } from '@/schemas/event-action'
-import { formatCurrency } from '@/utils/format-currency'
-import { formatDateToString } from '@/utils/date'
+import Table from "@/components/ui/table";
+import { useGetPageable } from "@/hooks/get";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { EventAction } from "@/schemas/event-action";
+import { formatCurrency } from "@/utils/format-currency";
+import { formatDateToString } from "@/utils/date";
+import { useAuth } from "@/hooks/use-auth";
+import { useMutate } from "@/hooks/mutate";
+import { EventSubscriptionForm } from "@/schemas/event";
+import { Button, Typography } from "@mui/material";
+import { useCallback } from "react";
 
 interface Props {
-	requestParams?: Record<string, unknown>
+  requestParams?: Record<string, unknown>;
+  eventId: number
 }
 
-export const EventActionsTable = ({  requestParams }: Props) => {
-	const {
-		data: eventTypes,
-		totalElements,
-		isLoading,
-	} = useGetPageable<EventAction>({
-		endpoint: ENDPOINTS.EVENT_ACTION,
-		requestParams: {
-			...requestParams,
-		},
-	})
+export const EventActionsTable = ({ requestParams, eventId }: Props) => {
+  const { user } = useAuth();
+  const { create } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+    endpoint: ENDPOINTS.EVENT_ACTION_SUBSCRIPTION
+  });
 
-    const columnHelper = createColumnHelper<EventAction>()
+  const {
+    data: eventTypes,
+    totalElements,
+    isLoading
+  } = useGetPageable<EventAction>({
+    endpoint: ENDPOINTS.EVENT_ACTION,
+    requestParams: {
+      ...requestParams,
+      eventId
+    }
+  });
 
-	const columns: ColumnDef<EventAction>[] = [
+  const columnHelper = createColumnHelper<EventAction>();
+
+  const columns: ColumnDef<EventAction>[] = [
     columnHelper.accessor("title", {
       id: "title",
       header: "Título"
@@ -51,10 +63,51 @@ export const EventActionsTable = ({  requestParams }: Props) => {
       cell: (cell) => formatCurrency(cell.getValue())
     }),
     columnHelper.accessor("quantityVacancies", {
-        id: "quantityVacancies",
-        header: "Vagas disponíveis",
-      })
-	] as ColumnDef<EventAction>[]
+      id: "quantityVacancies",
+      header: "Vagas disponíveis"
+    })
+  ] as ColumnDef<EventAction>[];
 
-	return <Table columns={columns} data={eventTypes} dataLength={totalElements} isLoading={isLoading} />
-}
+  const getAction = useCallback((eventAction: EventAction) => {
+    const inscribed = eventAction.participants?.some(
+      (participant) => participant.cpfNumber == user?.cpfNumber
+    );
+
+    if (inscribed) {
+      return (
+        <Typography color="primary" fontWeight={600}>
+          Inscrito
+        </Typography>
+      );
+    } else {
+      return (
+        <Button
+          variant="contained"
+          onClick={(e) => {
+            e.preventDefault();
+            create({
+              body: {
+                eventParticipantCpf: user?.cpfNumber ?? "",
+                mainEventId: eventId,
+                mainEventActionId: eventAction.id
+              },
+              successMessage: "Inscrição em ação realizada com sucesso!"
+            });
+          }}
+        >
+          Inscrever-se
+        </Button>
+      );
+    }
+  }, [eventId]);
+
+  return (
+    <Table
+      columns={columns}
+      data={eventTypes}
+      dataLength={totalElements}
+      isLoading={isLoading}
+      getAction={getAction}
+    />
+  );
+};

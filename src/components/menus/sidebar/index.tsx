@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { isSidebarCollapsedAtom } from '@/atoms/sidebar'
 import { SidebarContainer, StyledToggleButtonGroup } from './style'
-import { Event, EventNote } from '@mui/icons-material'
+import { Event, EventNote, Groups, ManageAccounts } from '@mui/icons-material'
 
 export const Sidebar = () => {
 	const isCollapsed = useAtomValue(isSidebarCollapsedAtom)
@@ -36,6 +36,14 @@ export const Sidebar = () => {
 				<ToggleButton value='event-types'>
 					<EventNote />
 					{!isCollapsed && 'Tipos de evento'}
+				</ToggleButton>
+				<ToggleButton value='managers'>
+					<ManageAccounts />
+					{!isCollapsed && 'Gerentes'}
+				</ToggleButton>
+				<ToggleButton value='participants'>
+					<Groups />
+					{!isCollapsed && 'Participantes'}
 				</ToggleButton>
 			</StyledToggleButtonGroup>
 

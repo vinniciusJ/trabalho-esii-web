@@ -9,7 +9,8 @@ export const eventActionSchema = z.object({
     registrationPrice: z.number(),
     address: z.string(),
     eventManagerDetailsDTO: userSchema,
-    quantityVacancies: z.number()
+    quantityVacancies: z.number(),
+    participants: z.array(userSchema) //TODO
 })
 
 export type EventAction = z.infer<typeof eventActionSchema>

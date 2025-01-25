@@ -10,6 +10,8 @@ import LoginPage from './pages/login'
 const EventTypesPage = lazy(() => import('@/pages/event-types'))
 const EventsPage = lazy(() => import('@/pages/events'))
 const EventPage = lazy(() => import('@/pages/event'))
+const ManagersPage = lazy(() => import('@/pages/managers'))
+const ParticipantsPage = lazy(() => import('@/pages/participants'))
 
 export const router = createBrowserRouter([
 	{
@@ -21,16 +23,6 @@ export const router = createBrowserRouter([
 					{
 						index: true,
 						element: <Navigate to='events' />,
-					},
-					{
-						path: 'event-types',
-						children: [
-							{
-								index: true,
-								element: <EventTypesPage />,
-							},
-							
-						],
 					},
 					{
 						path: 'events',
@@ -45,7 +37,36 @@ export const router = createBrowserRouter([
 							}
 						],
 					},
-					
+					{
+						path: 'event-types',
+						children: [
+							{
+								index: true,
+								element: <EventTypesPage />,
+							},
+							
+						],
+					},
+					{
+						path: 'managers',
+						children: [
+							{
+								index: true,
+								element: <ManagersPage />,
+							},
+							
+						],
+					},
+					{
+						path: 'participants',
+						children: [
+							{
+								index: true,
+								element: <ParticipantsPage />,
+							},
+							
+						],
+					},
 				]
 			},
 			{

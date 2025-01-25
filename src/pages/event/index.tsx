@@ -15,6 +15,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import { EventActionsTable } from "@/components/event-action/table";
 import EventActionForm from "@/components/event-action/form";
 import { closeModal, Modal, openModal, useModal } from "@/components/ui/modal";
+import { Add } from "@mui/icons-material";
 
 const EventPage: FC = () => {
   const { user } = useAuth();
@@ -42,7 +43,12 @@ const EventPage: FC = () => {
 
       <ViewLayout.Content>
         <StyledContainer>
-          <Stack gap={3} direction='row' flexWrap='wrap' justifyContent='space-between'>
+          <Stack
+            gap={3}
+            direction="row"
+            flexWrap="wrap"
+            justifyContent="space-between"
+          >
             <Field label="Tipo de evento">
               {event.mainEventTypeDetailsDTO.name}
             </Field>
@@ -63,12 +69,12 @@ const EventPage: FC = () => {
 
           <Stack justifyContent="space-between" direction="row">
             <Typography variant="h2">Ações</Typography>
-            <Button onClick={openModal(modalRef)} variant="contained">
+            <Button startIcon={<Add />} onClick={openModal(modalRef)}>
               Cadastrar Ação
             </Button>
           </Stack>
 
-          <EventActionsTable requestParams={{ eventId }} />
+          <EventActionsTable eventId={Number(eventId)} />
         </StyledContainer>
       </ViewLayout.Content>
 

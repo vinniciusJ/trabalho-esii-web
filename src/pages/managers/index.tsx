@@ -1,17 +1,17 @@
-import { EventsTable } from '@/components/event/table'
 import { StyledContainer } from '@/components/ui/container'
 import { ViewLayout } from '@/layouts/view'
 import { Button, Box, Typography } from '@mui/material'
 import { Add } from '@mui/icons-material'
 import { closeModal, Modal, openModal, useModal } from '@/components/ui/modal'
-import EventForm from '@/components/event/form'
 import { FC } from 'react';
 import { useAuth } from '@/hooks/use-auth'
 import { useNavigate } from 'react-router-dom'
 import { withAuthentication } from '@/hocs'
 import { allRoles } from '@/utils/auth'
+import { ManagersTable } from '@/components/manager/table'
+import ManagerForm from '@/components/manager/form'
 
-const EventsPage: FC = () => {
+const ManagersPage: FC = () => {
 	const { user } = useAuth()
 	const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const EventsPage: FC = () => {
 	return (
 		<ViewLayout.Root>
 			<ViewLayout.Header.Root>
-				<ViewLayout.Header.Title>Eventos</ViewLayout.Header.Title>
+				<ViewLayout.Header.Title>Gerentes</ViewLayout.Header.Title>
 				<ViewLayout.Header.RightElements>
 					<Button
 						variant="text"
@@ -30,14 +30,14 @@ const EventsPage: FC = () => {
 						startIcon={<Add />}
 						onClick={openModal(modalRef)}
 					>
-						Cadastrar Evento
+						Cadastrar Gerente
 					</Button>
 				</ViewLayout.Header.RightElements>
 			</ViewLayout.Header.Root>
 
 			<ViewLayout.Content>
 				<StyledContainer>
-					<EventsTable />
+					<ManagersTable />
 				</StyledContainer>
 			</ViewLayout.Content>
 
@@ -51,12 +51,12 @@ const EventsPage: FC = () => {
 						width: '100%',
 					}}
 				>
-					<Typography>Cadastrar Evento</Typography>
-					<EventForm onClose={closeModal(modalRef)} />
+					<Typography>Cadastrar Gerente</Typography>
+					<ManagerForm onClose={closeModal(modalRef)} />
 				</Box>
 			</Modal>
 		</ViewLayout.Root>
 	)
 }
 
-export default withAuthentication(EventsPage, allRoles)
+export default withAuthentication(ManagersPage, allRoles)

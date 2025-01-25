@@ -88,7 +88,7 @@ export const EventsTable = ({ requestParams }: Props) => {
                 mainEventId: event.id,
                 mainEventActionId: null
               },
-              successMessage: "Inscrição realizada com sucesso"
+              successMessage: "Inscrição em evento realizada com sucesso!"
             });
           }}
         >
