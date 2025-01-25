@@ -24,11 +24,11 @@ export const getUserFromToken = (token?: string | null): User | null => {
 
     const user: User = {
         id: decodedToken.id,
-        name: decodedToken.name ?? 'Unknown',
-        cpfNumber: decodedToken.cpf ?? 'Unknown',
-        email: decodedToken.email ?? 'Unknown',
+        name: decodedToken.name,
+        cpfNumber: decodedToken.cpf,
+        email: decodedToken.email,
         password: '',
-        phone: '',
+        phone: decodedToken.email,
         isEmailVerified: false,
         personRole: decodedToken.role,
     }

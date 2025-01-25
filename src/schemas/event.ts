@@ -2,6 +2,14 @@ import { z } from "zod"
 import { eventTypeSchema } from "./event-type"
 import { userSchema } from "./user"
 
+export const eventSubscriptionForm = z.object({
+    eventParticipantCpf: z.string(),
+    mainEventId: z.number(),
+    mainEventActionId: z.number().nullable().default(null)
+})
+
+export type EventSubscriptionForm = z.infer<typeof eventSubscriptionForm>
+
 export const eventSchema = z.object({
     id: z.number(),
     title: z.string(),
@@ -10,7 +18,8 @@ export const eventSchema = z.object({
     registrationPrice: z.number(),
     mainEventTypeDetailsDTO: eventTypeSchema,
     eventManagerDetailsDTO: userSchema,
-    address: z.string()
+    address: z.string(),
+    participants: z.array(userSchema) //TODO
 })
 
 export type Event = z.infer<typeof eventSchema>

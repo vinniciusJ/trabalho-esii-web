@@ -23,7 +23,7 @@ export const eventActionFormSchema = z.object({
         .nonnegative("O preço deve ser maior ou igual a 0.")
         .default(0),
     address: z.string().nonempty("O endereço é obrigatório."),
-    eventManagerCpfNumber: z.string(),
+    eventManagerCpfNumber: z.string(), //TODO
     quantityVacancies: z.number()
         .nonnegative("A quantidade de vagas deve ser maior ou igual a 0.")
         .default(0),
