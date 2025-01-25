@@ -124,10 +124,10 @@ export const useMutate = <T extends object, P extends object = object>({
   });
 
   const removeMutationFn: MutationFunction<void, DeleteMethodParams> = async ({
-    id
+    id, customEnpoint
   }) => {
     startLoading();
-    await service.delete(id);
+    await service.delete(id, customEnpoint);
     stopLoading();
   };
 

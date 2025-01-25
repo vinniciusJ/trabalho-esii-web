@@ -56,7 +56,7 @@ export class Service<T extends ReturnType> {
 	}
 
 	async delete(id: number | string, endpoint?: string): Promise<void> {
-		await this.axiosInstance.delete(endpoint ?? `/${this.endpoint}/${id}`)
+		await this.axiosInstance.delete(endpoint ?? `/${this.endpoint}/${id}`, )
 	}
 
 	async sendFile(body: FormData, params?: Params, endpoint?: string): Promise<Blob> {

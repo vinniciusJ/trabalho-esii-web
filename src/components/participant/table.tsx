@@ -15,10 +15,9 @@ export const ParticipantsTable = ({ requestParams }: Props) => {
     totalElements,
     isLoading
   } = useGetPageable<User>({
-    endpoint: ENDPOINTS.MANAGER,
+    endpoint: ENDPOINTS.EVENT_PARTICIPANT,
     requestParams: {
       ...requestParams,
-      personRole: 'ROLE_EVENT_PARTICIPANT'
     }
   });
 

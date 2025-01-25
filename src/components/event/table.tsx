@@ -6,7 +6,7 @@ import { Event, EventSubscriptionForm } from "@/schemas/event";
 import { formatDateToString } from "@/utils/date";
 import { useCallback } from "react";
 import { formatCurrency } from "@/utils/format-currency";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutate } from "@/hooks/mutate";
 
@@ -16,7 +16,10 @@ interface Props {
 
 export const EventsTable = ({ requestParams }: Props) => {
   const { user } = useAuth();
-  const { patch } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+  const { patch, remove } = useMutate<
+    EventSubscriptionForm,
+    EventSubscriptionForm
+  >({
     endpoint: ""
   });
 
@@ -29,7 +32,7 @@ export const EventsTable = ({ requestParams }: Props) => {
     requestParams: {
       ...requestParams,
       ...(user?.personRole == "ROLE_EVENT_MANAGER" && {
-        eventManagerId: Number(user?.id) //TODO
+        eventManagerId: Number(user?.id)
       })
     }
   });
@@ -68,37 +71,51 @@ export const EventsTable = ({ requestParams }: Props) => {
 
   const getRowLink = useCallback((event: Event) => `${event.id}`, []);
 
-  const getAction = useCallback((event: Event) => {
-    const inscribed = event.participants?.some(
-      (participant) => participant.cpfNumber == user?.cpfNumber
-    );
+  const getAction = useCallback(
+    (event: Event) => {
+      const inscribed = event.participants?.some(
+        (participant) => participant.cpfNumber == user?.cpfNumber
+      );
 
-    if (inscribed) {
-      return (
-        <Typography color="primary" fontWeight={600}>
-          Inscrito
-        </Typography>
-      );
-    } else {
-      return (
-        <Button
-          variant="contained"
-          onClick={(e) => {
-            e.preventDefault();
-            patch({
-              customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}`, 
-              body: {
-                participantId: Number(user?.id), //TODO
-              },
-              successMessage: "Inscrição em evento realizada com sucesso!",
-            });
-          }}
-        >
-          Inscrever-se
-        </Button>
-      );
-    }
-  }, [user, events]);
+      if (inscribed) {
+        return (
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={(e) => {
+              e.preventDefault();
+              remove({
+                customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}/${Number(user?.id)}`,
+                id: Number(user?.id),
+                successMessage: "Inscrição em cancelada!"
+              });
+            }}
+          >
+            Cancelar inscrição
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              patch({
+                customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}`,
+                body: {
+                  participantId: Number(user?.id)
+                },
+                successMessage: "Inscrição em evento realizada com sucesso!"
+              });
+            }}
+          >
+            Inscrever-se
+          </Button>
+        );
+      }
+    },
+    [user, events]
+  );
 
   return (
     <Table
@@ -107,7 +124,9 @@ export const EventsTable = ({ requestParams }: Props) => {
       dataLength={totalElements}
       isLoading={isLoading}
       getRowLink={getRowLink}
-      getAction={user?.personRole != "ROLE_ADMIN" ? getAction : undefined}
+      getAction={
+        user?.personRole == "ROLE_EVENT_MANAGER" ? getAction : undefined
+      }
     />
   );
 };

@@ -9,7 +9,7 @@ import { formatDateToString } from "@/utils/date";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutate } from "@/hooks/mutate";
 import { EventSubscriptionForm } from "@/schemas/event";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useCallback } from "react";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 
 export const EventActionsTable = ({ requestParams, eventId }: Props) => {
   const { user } = useAuth();
-  const { patch } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
+  const { patch, remove } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
     endpoint: ''
   });
 
@@ -31,7 +31,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
     endpoint: ENDPOINTS.EVENT_ACTION,
     requestParams: {
       ...requestParams,
-      eventId //TODO
+      eventId
     }
   });
 
@@ -64,7 +64,12 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
     }),
     columnHelper.accessor("quantityVacancies", {
       id: "quantityVacancies",
-      header: "Vagas disponíveis"
+      header: "Total de vagas"
+    }),
+    columnHelper.accessor("quantityVacancies", {
+      id: "quantityVacancies",
+      header: "Vagas disponíveis",
+      cell: (cell) => cell.getValue() - cell.row.original.participants?.length
     })
   ] as ColumnDef<EventAction>[];
 
@@ -75,9 +80,20 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
 
     if (inscribed) {
       return (
-        <Typography color="primary" fontWeight={600}>
-          Inscrito
-        </Typography>
+        <Button
+        variant="outlined"
+        color="warning"
+        onClick={(e) => {
+          e.preventDefault();
+          remove({
+            customEnpoint: `${ENDPOINTS.EVENT_ACTION}/${eventAction.id}/${ENDPOINTS.PARTICIPANT}/${Number(user?.id)}`,
+            id: Number(user?.id),
+            successMessage: "Inscrição em cancelada!"
+          });
+        }}
+      >
+        Cancelar inscrição
+      </Button>
       );
     } else {
       return (
@@ -106,7 +122,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
       data={eventTypes}
       dataLength={totalElements}
       isLoading={isLoading}
-      getAction={user?.personRole != "ROLE_ADMIN" ? getAction : undefined}
+      getAction={user?.personRole == "ROLE_EVENT_PARTICIPANT" ? getAction : undefined}
     />
   );
 };

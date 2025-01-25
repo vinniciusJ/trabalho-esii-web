@@ -11,11 +11,12 @@ import { Event } from "@/schemas/event";
 import { Field } from "@/components/ui/field";
 import { formatDateToString } from "@/utils/date";
 import { formatCurrency } from "@/utils/format-currency";
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { EventActionsTable } from "@/components/event-action/table";
 import EventActionForm from "@/components/event-action/form";
 import { closeModal, Modal, openModal, useModal } from "@/components/ui/modal";
 import { Add } from "@mui/icons-material";
+import EventForm from "@/components/event/form";
 
 const EventPage: FC = () => {
   const { user } = useAuth();
@@ -24,7 +25,8 @@ const EventPage: FC = () => {
   if (!user) navigate("/login");
 
   const { eventId } = useParams();
-  const modalRef = useModal();
+  const actionModalRef = useModal();
+  const editModalRef = useModal();
 
   const { data: event } = useGetBy<Event>({
     endpoint: ENDPOINTS.EVENT,
@@ -39,6 +41,11 @@ const EventPage: FC = () => {
         <ViewLayout.Header.Title
           goBack
         >{`Evento ${event.title}`}</ViewLayout.Header.Title>
+        <ViewLayout.Header.RightElements>
+          {user?.personRole != 'ROLE_EVENT_PARTICIPANT' && (
+            <Button variant="outlined" onClick={openModal(editModalRef)}>Editar</Button>
+          )}
+        </ViewLayout.Header.RightElements>
       </ViewLayout.Header.Root>
 
       <ViewLayout.Content>
@@ -69,7 +76,7 @@ const EventPage: FC = () => {
 
           <Stack justifyContent="space-between" direction="row">
             <Typography variant="h2">Ações</Typography>
-            <Button startIcon={<Add />} onClick={openModal(modalRef)}>
+            <Button startIcon={<Add />} onClick={openModal(actionModalRef)}>
               Cadastrar Ação
             </Button>
           </Stack>
@@ -78,8 +85,23 @@ const EventPage: FC = () => {
         </StyledContainer>
       </ViewLayout.Content>
 
-      <Modal ref={modalRef}>
-        <EventActionForm onClose={closeModal(modalRef)} eventId={event.id} />
+      <Modal ref={editModalRef}>
+        <Box
+          sx={{
+            p: 3,
+            backgroundColor: "white",
+            borderRadius: 2,
+            maxWidth: 600,
+            width: "100%"
+          }}
+        >
+          <Typography>Editar Evento</Typography>
+          <EventForm onClose={closeModal(editModalRef)} event={event} />
+        </Box>
+      </Modal>
+
+      <Modal ref={actionModalRef}>
+        <EventActionForm onClose={closeModal(actionModalRef)} eventId={event.id} />
       </Modal>
     </ViewLayout.Root>
   );

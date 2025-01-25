@@ -42,7 +42,7 @@ const EventActionForm: FC<Props> = ({ onClose, eventId }) => {
 
   useEffect(() => {
     if (user) {
-      setValue("eventManagerCpfNumber", user.cpfNumber);
+      setValue("eventManagerId", Number(user.id));
       setValue("mainEventId", eventId);
     }
   }, [user?.cpfNumber, setValue]);

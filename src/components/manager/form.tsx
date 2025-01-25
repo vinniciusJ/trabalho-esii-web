@@ -1,14 +1,8 @@
 import { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Box,
-  Button,
-  TextField,
-  Stack
-} from "@mui/material";
+import { Box, Button, TextField, Stack } from "@mui/material";
 import { ENDPOINTS } from "@/constants/endpoints";
-import { useAuth } from "@/hooks/use-auth";
 import { useMutate } from "@/hooks/mutate";
 import { User, UserForm, userFormSchema } from "@/schemas/user";
 
@@ -20,7 +14,6 @@ const ManagerForm: FC<Props> = ({ onClose }) => {
   const { create } = useMutate<User, UserForm>({
     endpoint: ENDPOINTS.MANAGER
   });
-  const { user } = useAuth();
 
   const {
     register,
@@ -32,18 +25,14 @@ const ManagerForm: FC<Props> = ({ onClose }) => {
   });
 
   useEffect(() => {
-    if (user?.cpfNumber) {
-      setValue("isEmailVerified", false);
-      setValue("personRole", "ROLE_EVENT_MANAGER");
-    }
-  }, [user?.cpfNumber, setValue]);
+    setValue("isEmailVerified", false);
+    setValue("personRole", "ROLE_EVENT_MANAGER");
+  }, []);
 
   const onSubmit = (data: UserForm) => {
     create({ body: data, successMessage: "Gerente criado com sucesso!" });
     onClose();
   };
-
-  console.log(errors)
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>

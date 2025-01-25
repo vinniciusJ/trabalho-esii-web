@@ -10,7 +10,7 @@ export const eventActionSchema = z.object({
     address: z.string(),
     eventManagerDetailsDTO: userSchema,
     quantityVacancies: z.number(),
-    participants: z.array(userSchema) //TODO
+    participants: z.array(userSchema)
 })
 
 export type EventAction = z.infer<typeof eventActionSchema>
@@ -24,7 +24,7 @@ export const eventActionFormSchema = z.object({
         .nonnegative("O preço deve ser maior ou igual a 0.")
         .default(0),
     address: z.string().nonempty("O endereço é obrigatório."),
-    eventManagerCpfNumber: z.string(), //TODO
+    eventManagerId: z.number(),
     quantityVacancies: z.number()
         .nonnegative("A quantidade de vagas deve ser maior ou igual a 0.")
         .default(0),

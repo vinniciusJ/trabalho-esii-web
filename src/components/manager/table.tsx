@@ -18,7 +18,6 @@ export const ManagersTable = ({ requestParams }: Props) => {
     endpoint: ENDPOINTS.MANAGER,
     requestParams: {
       ...requestParams,
-      personRole: 'ROLE_EVENT_MANAGER'
     }
   });
 

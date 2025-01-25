@@ -1,144 +1,174 @@
-import { FC, useEffect } from 'react';
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { FC, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-    Box,
-    Button,
-    TextField,
-    MenuItem,
-    CircularProgress,
-    Stack,
-} from '@mui/material'
-import { ENDPOINTS } from '@/constants/endpoints'
-import { useGetAll } from '@/hooks/get';
-import { Event, EventForm as EventFormType, eventFormSchema } from '@/schemas/event'
-import { EventType } from '@/schemas/event-type'
-import { useAuth } from '@/hooks/use-auth'
-import { useMutate } from '@/hooks/mutate';
+  Box,
+  Button,
+  TextField,
+  MenuItem,
+  CircularProgress,
+  Stack
+} from "@mui/material";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { useGetAll } from "@/hooks/get";
+import {
+  Event,
+  EventForm as EventFormType,
+  eventFormSchema
+} from "@/schemas/event";
+import { EventType } from "@/schemas/event-type";
+import { useAuth } from "@/hooks/use-auth";
+import { useMutate } from "@/hooks/mutate";
 
 type Props = {
-    onClose: () => void
-}
+  onClose: () => void;
+  event?: Event;
+};
 
-const EventForm: FC<Props> = ({ onClose }) => {
-      const { create } = useMutate<Event>({
-        endpoint: ENDPOINTS.EVENT
-      });
-    const { user } = useAuth()
-    const { data: eventTypes, isLoading } = useGetAll<EventType>({
-        endpoint: ENDPOINTS.EVENT_TYPE,
-    })
+const EventForm: FC<Props> = ({ onClose, event }) => {
+  const { create, update } = useMutate<Event>({
+    endpoint: ENDPOINTS.EVENT
+  });
+  const { user } = useAuth();
+  const { data: eventTypes, isLoading } = useGetAll<EventType>({
+    endpoint: ENDPOINTS.EVENT_TYPE
+  });
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-    } = useForm<EventFormType>({
-        resolver: zodResolver(eventFormSchema),
-    })
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = useForm<EventFormType>({
+    resolver: zodResolver(eventFormSchema),
+    values: event ? {
+      ...(event as unknown as EventFormType),
+      mainEventTypeId: Number(event?.mainEventTypeDetailsDTO.id),
+      eventManagerCpfNumber: event?.eventManagerDetailsDTO.cpfNumber ?? ''
+    } : undefined
+  });
 
-    useEffect(() => {
-        if (user?.cpfNumber) {
-            setValue('eventManagerCpfNumber', user.cpfNumber)
-        }
-    }, [user?.cpfNumber, setValue])
+  console.log(errors, user);
 
-    const onSubmit = (data: EventFormType) => {
-        create({body: data, successMessage: 'Evento criado com sucesso!'})
-        onClose()
+  useEffect(() => {
+    if (user?.cpfNumber) {
+      setValue("eventManagerCpfNumber", user.cpfNumber);
     }
+  }, [event, user?.cpfNumber, setValue]);
 
-    return (
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-                {...register('title')}
-                label="Título do Evento"
-                variant="filled"
-                fullWidth
-                margin="normal"
-                error={!!errors.title}
-                helperText={errors.title?.message}
-            />
-            <TextField
-                {...register('startDateTime')}
-                label="Data e Hora de Início"
-                type="datetime-local"
-                fullWidth
-                margin="normal"
-                error={!!errors.startDateTime}
-                helperText={errors.startDateTime?.message}
-                slotProps={{
-                    inputLabel: {
-                        shrink: true,
-                    },
-                }}
-            />
-            <TextField
-                {...register('endDateTime')}
-                label="Data e Hora de Término"
-                type="datetime-local"
-                fullWidth
-                margin="normal"
-                error={!!errors.endDateTime}
-                helperText={errors.endDateTime?.message}
-                slotProps={{
-                    inputLabel: {
-                        shrink: true,
-                    },
-                }}
-            />
-            <TextField
-                {...register('registrationPrice', { valueAsNumber: true })}
-                label="Preço de Inscrição"
-                type="number"
-                fullWidth
-                margin="normal"
-                error={!!errors.registrationPrice}
-                helperText={errors.registrationPrice?.message}
-            />
-            <TextField
-                {...register('address')}
-                label="Endereço"
-                variant="filled"
-                fullWidth
-                margin="normal"
-                error={!!errors.address}
-                helperText={errors.address?.message}
-            />
-            <TextField
-                {...register('mainEventTypeId', { valueAsNumber: true })}
-                label="Tipo de Evento"
-                select
-                variant="filled"
-                fullWidth
-                margin="normal"
-                error={!!errors.mainEventTypeId}
-                helperText={errors.mainEventTypeId?.message}
-            >
-                {isLoading ? (
-                    <MenuItem value="">
-                        <CircularProgress size={20} />
-                    </MenuItem>
-                ) : (
-                    eventTypes?.map((type: EventType) => (
-                        <MenuItem key={type.id} value={type.id}>
-                            {type.name}
-                        </MenuItem>
-                    ))
-                )}
-            </TextField>
+  const onSubmit = (data: EventFormType) => {
+    if (event) {
+      update({
+        body: data,
+        successMessage: "Evento editado com sucesso!",
+        id: event.id
+      });
+    } else {
+      create({ body: data, successMessage: "Evento criado com sucesso!" });
+    }
+    onClose();
+  };
 
-            <Stack direction="row" justifyContent={'flex-end'} spacing={2} sx={{ mt: 2 }}>
-                <Button type="button" variant="outlined" color="secondary" onClick={onClose}>
-                    Cancelar
-                </Button>
-                <Button type="submit" variant="contained" color="primary">
-                    Concluir
-                </Button>
-            </Stack>
-        </Box>
-    )
-}
+  return (
+    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <TextField
+        {...register("title")}
+        label="Título do Evento"
+        variant="filled"
+        fullWidth
+        margin="normal"
+        error={!!errors.title}
+        helperText={errors.title?.message}
+      />
+      <TextField
+        {...register("startDateTime")}
+        label="Data e Hora de Início"
+        type="datetime-local"
+        fullWidth
+        margin="normal"
+        error={!!errors.startDateTime}
+        helperText={errors.startDateTime?.message}
+        slotProps={{
+          inputLabel: {
+            shrink: true
+          }
+        }}
+      />
+      <TextField
+        {...register("endDateTime")}
+        label="Data e Hora de Término"
+        type="datetime-local"
+        fullWidth
+        margin="normal"
+        error={!!errors.endDateTime}
+        helperText={errors.endDateTime?.message}
+        slotProps={{
+          inputLabel: {
+            shrink: true
+          }
+        }}
+      />
+      <TextField
+        {...register("registrationPrice", { valueAsNumber: true })}
+        label="Preço de Inscrição"
+        type="number"
+        fullWidth
+        margin="normal"
+        error={!!errors.registrationPrice}
+        helperText={errors.registrationPrice?.message}
+      />
+      <TextField
+        {...register("address")}
+        label="Endereço"
+        variant="filled"
+        fullWidth
+        margin="normal"
+        error={!!errors.address}
+        helperText={errors.address?.message}
+      />
+      <TextField
+        {...register("mainEventTypeId", { valueAsNumber: true })}
+        label="Tipo de Evento"
+        select
+        variant="filled"
+        fullWidth
+        margin="normal"
+        error={!!errors.mainEventTypeId}
+        helperText={errors.mainEventTypeId?.message}
+      >
+        {isLoading ? (
+          <MenuItem value="">
+            <CircularProgress size={20} />
+          </MenuItem>
+        ) : (
+          eventTypes?.map((type: EventType) => (
+            <MenuItem key={type.id} value={type.id}>
+              {type.name}
+            </MenuItem>
+          ))
+        )}
+      </TextField>
 
-export default EventForm
+      <Stack
+        direction="row"
+        justifyContent={"flex-end"}
+        spacing={2}
+        sx={{ mt: 2 }}
+      >
+        <Button
+          type="button"
+          variant="outlined"
+          color="secondary"
+          onClick={onClose}
+        >
+          Cancelar
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Concluir
+        </Button>
+      </Stack>
+    </Box>
+  );
+};
+
+export default EventForm;
