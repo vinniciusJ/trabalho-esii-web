@@ -10,18 +10,20 @@ import {
     Stack,
 } from '@mui/material'
 import { ENDPOINTS } from '@/constants/endpoints'
-import { useEventMutations } from '@/hooks/use-event-mutations'
 import { useGetAll } from '@/hooks/get';
-import { EventForm as EventFormType, eventFormSchema } from '@/schemas/event'
+import { Event, EventForm as EventFormType, eventFormSchema } from '@/schemas/event'
 import { EventType } from '@/schemas/event-type'
 import { useAuth } from '@/hooks/use-auth'
+import { useMutate } from '@/hooks/mutate';
 
 type Props = {
     onClose: () => void
 }
 
 const EventForm: FC<Props> = ({ onClose }) => {
-    const { createEvent } = useEventMutations()
+      const { create } = useMutate<Event>({
+        endpoint: ENDPOINTS.EVENT
+      });
     const { user } = useAuth()
     const { data: eventTypes, isLoading } = useGetAll<EventType>({
         endpoint: ENDPOINTS.EVENT_TYPE,
@@ -43,7 +45,7 @@ const EventForm: FC<Props> = ({ onClose }) => {
     }, [user?.cpfNumber, setValue])
 
     const onSubmit = (data: EventFormType) => {
-        createEvent(data)
+        create({body: data, successMessage: 'Evento criado com sucesso!'})
         onClose()
     }
 
