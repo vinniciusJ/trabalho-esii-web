@@ -35,14 +35,18 @@ export const Sidebar = () => {
           <Event />
           {!isCollapsed && "Eventos"}
         </ToggleButton>
-        <ToggleButton value="event-types">
-          <EventNote />
-          {!isCollapsed && "Tipos de evento"}
-        </ToggleButton>
-        <ToggleButton value="participants">
-          <Groups />
-          {!isCollapsed && "Participantes"}
-        </ToggleButton>
+        {user?.personRole != "ROLE_EVENT_PARTICIPANT" && (
+          <ToggleButton value="event-types">
+            <EventNote />
+            {!isCollapsed && "Tipos de evento"}
+          </ToggleButton>
+        )}
+        {user?.personRole != "ROLE_EVENT_PARTICIPANT" && (
+          <ToggleButton value="participants">
+            <Groups />
+            {!isCollapsed && "Participantes"}
+          </ToggleButton>
+        )}
         {user?.personRole == "ROLE_ADMIN" && (
           <ToggleButton value="managers">
             <ManageAccounts />

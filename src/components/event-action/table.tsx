@@ -8,19 +8,20 @@ import { formatCurrency } from "@/utils/format-currency";
 import { formatDateToString } from "@/utils/date";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutate } from "@/hooks/mutate";
-import { EventSubscriptionForm } from "@/schemas/event";
+import { Event, EventSubscriptionForm } from "@/schemas/event";
 import { Button } from "@mui/material";
 import { useCallback } from "react";
 
 interface Props {
   requestParams?: Record<string, unknown>;
-  eventId: number
+  event: Event
 }
 
-export const EventActionsTable = ({ requestParams, eventId }: Props) => {
+export const EventActionsTable = ({ requestParams, event }: Props) => {
   const { user } = useAuth();
   const { create, remove } = useMutate<EventSubscriptionForm, EventSubscriptionForm>({
-    endpoint: ''
+    endpoint: '',
+    invalidateQueries: [[ENDPOINTS.EVENT_ACTION]]
   });
 
   const {
@@ -31,7 +32,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
     endpoint: ENDPOINTS.EVENT_ACTION,
     requestParams: {
       ...requestParams,
-      eventId
+      eventId: event.id
     }
   });
 
@@ -114,7 +115,9 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
         </Button>
       );
     }
-  }, [eventId]);
+  }, [event]);
+
+  const inscribed = event.eventParticipants.some(p => p.id == user?.id)
 
   return (
     <Table
@@ -122,7 +125,7 @@ export const EventActionsTable = ({ requestParams, eventId }: Props) => {
       data={eventTypes}
       dataLength={totalElements}
       isLoading={isLoading}
-      getAction={user?.personRole == "ROLE_EVENT_PARTICIPANT" ? getAction : undefined}
+      getAction={user?.personRole == "ROLE_EVENT_PARTICIPANT" && inscribed ? getAction : undefined}
     />
   );
 };

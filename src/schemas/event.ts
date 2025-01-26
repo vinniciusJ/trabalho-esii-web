@@ -17,7 +17,7 @@ export const eventSchema = z.object({
     mainEventTypeDetailsDTO: eventTypeSchema,
     eventManagerDetailsDTO: userSchema,
     address: z.string(),
-    participants: z.array(userSchema)
+    eventParticipants: z.array(userSchema)
 })
 
 export type Event = z.infer<typeof eventSchema>

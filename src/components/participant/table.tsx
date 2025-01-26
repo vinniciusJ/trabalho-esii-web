@@ -42,15 +42,12 @@ export const ParticipantsTable = ({ requestParams }: Props) => {
     })
   ] as ColumnDef<User>[];
 
-  const getRowLink = useCallback((participant: User) => `${participant.id}`, []);
-
   return (
     <Table
       columns={columns}
       data={participants}
       dataLength={totalElements}
       isLoading={isLoading}
-      getRowLink={getRowLink}
     />
   );
 };

@@ -42,15 +42,12 @@ export const ManagersTable = ({ requestParams }: Props) => {
     })
   ] as ColumnDef<User>[];
 
-  const getRowLink = useCallback((manager: User) => `${manager.id}`, []);
-
   return (
     <Table
       columns={columns}
       data={managers}
       dataLength={totalElements}
       isLoading={isLoading}
-      getRowLink={getRowLink}
     />
   );
 };

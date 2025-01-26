@@ -20,7 +20,8 @@ export const EventsTable = ({ requestParams }: Props) => {
     EventSubscriptionForm,
     EventSubscriptionForm
   >({
-    endpoint: ""
+    endpoint: "",
+    invalidateQueries: [[ENDPOINTS.EVENT]]
   });
 
   const {
@@ -73,7 +74,7 @@ export const EventsTable = ({ requestParams }: Props) => {
 
   const getAction = useCallback(
     (event: Event) => {
-      const inscribed = event.participants?.some(
+      const inscribed = event.eventParticipants?.some(
         (participant) => participant.cpfNumber == user?.cpfNumber
       );
 
@@ -87,7 +88,7 @@ export const EventsTable = ({ requestParams }: Props) => {
               remove({
                 customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}/${Number(user?.id)}`,
                 id: Number(user?.id),
-                successMessage: "Inscrição em cancelada!"
+                successMessage: "Inscrição em cancelada!",
               });
             }}
           >

@@ -7,7 +7,7 @@ import { withAuthentication } from "@/hocs";
 import { allRoles } from "@/utils/auth";
 import { useGetBy } from "@/hooks/get-by";
 import { ENDPOINTS } from "@/constants/endpoints";
-import { Event } from "@/schemas/event";
+import { Event, EventSubscriptionForm } from "@/schemas/event";
 import { Field } from "@/components/ui/field";
 import { formatDateToString } from "@/utils/date";
 import { formatCurrency } from "@/utils/format-currency";
@@ -17,6 +17,7 @@ import EventActionForm from "@/components/event-action/form";
 import { closeModal, Modal, openModal, useModal } from "@/components/ui/modal";
 import { Add } from "@mui/icons-material";
 import EventForm from "@/components/event/form";
+import { useMutate } from "@/hooks/mutate";
 
 const EventPage: FC = () => {
   const { user } = useAuth();
@@ -33,7 +34,19 @@ const EventPage: FC = () => {
     id: eventId ?? ""
   });
 
+  const { create, remove } = useMutate<
+    EventSubscriptionForm,
+    EventSubscriptionForm
+  >({
+    endpoint: "",
+    invalidateQueries: [[ENDPOINTS.EVENT]]
+  });
+
   if (!event) return null;
+
+  const inscribed = event.eventParticipants?.some(
+    (participant) => participant.cpfNumber == user?.cpfNumber
+  );
 
   return (
     <ViewLayout.Root>
@@ -42,9 +55,44 @@ const EventPage: FC = () => {
           goBack
         >{`Evento ${event.title}`}</ViewLayout.Header.Title>
         <ViewLayout.Header.RightElements>
-          {user?.personRole != 'ROLE_EVENT_PARTICIPANT' && (
-            <Button variant="outlined" onClick={openModal(editModalRef)}>Editar</Button>
+          {user?.personRole != "ROLE_EVENT_PARTICIPANT" && (
+            <Button variant="outlined" onClick={openModal(editModalRef)}>
+              Editar
+            </Button>
           )}
+          {user?.personRole == "ROLE_EVENT_PARTICIPANT" &&
+            (inscribed ? (
+              <Button
+                variant="outlined"
+                color="warning"
+                onClick={(e) => {
+                  e.preventDefault();
+                  remove({
+                    customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}/${Number(user?.id)}`,
+                    id: Number(user?.id),
+                    successMessage: "Inscrição em cancelada!"
+                  });
+                }}
+              >
+                Cancelar inscrição
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                  e.preventDefault();
+                  create({
+                    customEnpoint: `${ENDPOINTS.EVENT}/${event.id}/${ENDPOINTS.PARTICIPANT}`,
+                    body: {
+                      participantId: Number(user?.id)
+                    },
+                    successMessage: "Inscrição em evento realizada com sucesso!"
+                  });
+                }}
+              >
+                Inscrever-se
+              </Button>
+            ))}
         </ViewLayout.Header.RightElements>
       </ViewLayout.Header.Root>
 
@@ -76,12 +124,14 @@ const EventPage: FC = () => {
 
           <Stack justifyContent="space-between" direction="row">
             <Typography variant="h2">Ações</Typography>
-            <Button startIcon={<Add />} onClick={openModal(actionModalRef)}>
-              Cadastrar Ação
-            </Button>
+            {user?.personRole != "ROLE_EVENT_PARTICIPANT" && (
+              <Button startIcon={<Add />} onClick={openModal(actionModalRef)}>
+                Cadastrar Ação
+              </Button>
+            )}
           </Stack>
 
-          <EventActionsTable eventId={Number(eventId)} />
+          <EventActionsTable event={event} />
         </StyledContainer>
       </ViewLayout.Content>
 
@@ -101,7 +151,10 @@ const EventPage: FC = () => {
       </Modal>
 
       <Modal ref={actionModalRef}>
-        <EventActionForm onClose={closeModal(actionModalRef)} eventId={event.id} />
+        <EventActionForm
+          onClose={closeModal(actionModalRef)}
+          eventId={event.id}
+        />
       </Modal>
     </ViewLayout.Root>
   );
