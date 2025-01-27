@@ -1,0 +1,22 @@
+server {
+  listen 80;
+  server_name localhost;
+
+  proxy_pass_header Server;
+
+  charset utf-8;
+  index index.html;
+  root /usr/share/nginx/html;
+
+  location / {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    try_files $uri /index.html;
+  }
+
+  location /eventos-api/ {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass ${EVENTOS_API_URL};
+  }
+}

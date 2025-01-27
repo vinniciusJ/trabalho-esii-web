@@ -2,7 +2,6 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Table from "@/components/ui/table";
 import { useGetPageable } from "@/hooks/get";
 import { ENDPOINTS } from "@/constants/endpoints";
-import { useCallback } from "react";
 import { User } from "@/schemas/user";
 
 interface Props {
